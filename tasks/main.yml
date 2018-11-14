@@ -1,0 +1,43 @@
+---
+- name: update apt cache
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: install the required dependencies (Debian)
+  apt:
+    name:
+    - openssl
+    - python-boto
+    - python-openssl
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: install the required dependencies (Red Hat) (Requires EPEL)
+  yum:
+    name:
+    - openssl
+    - python-pip
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- include: virtualenv.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: get the public IP address
+  ipify_facts:
+  register: public_ip
+
+- name: update the DNS record(s)
+  route53:
+    state: present
+    zone: "{{ item.zone }}"
+    record: "{{ item.record }}"
+    type: "{{ item.type | default('A') }}"
+    ttl: "{{ item.ttl | default(omit) }}"
+    value: "{{ public_ip.ansible_facts.ipify_public_ip }}"
+    aws_access_key: "{{ update_ip_r53_aws_access_key }}"
+    aws_secret_key: "{{ update_ip_r53_aws_secret_key }}"
+    wait: "{{ item.wait | default('yes') }}"
+    overwrite: yes
+  with_items: "{{ update_ip_r53_records }}"

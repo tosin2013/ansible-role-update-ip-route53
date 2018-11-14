@@ -1,0 +1,33 @@
+---
+- name: install the virtualenv requirements
+  yum:
+    name:
+    - python-virtualenv
+    - gcc
+    - python-devel
+    - openssl-devel
+    - libffi-devel
+    state: present
+
+- name: install pyOpenSSL and boto in a virtualenv
+  pip:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
+    # This is required for libselinux-python
+    virtualenv_site_packages: yes
+  with_items:
+  # Update setuptools
+  - name: setuptools
+    state: latest
+  - name: pyOpenSSL
+    version: 17.5.0
+  - name: boto
+  - name: enum34
+  - name: ipaddress
+  - name: cffi
+
+- name: use the created virtualenv
+  set_fact:
+    ansible_python_interpreter: "{{ update_ip_r53_virtualenv_dir }}/bin/python"
