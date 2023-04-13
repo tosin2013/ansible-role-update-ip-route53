@@ -30,7 +30,8 @@
     state: present
   when: ansible_os_family == 'FreeBSD'
 
-- ansible.builtin.import_playbook: virtualenv.yml
+- name: Running VirtualEnv
+  ansible.builtin.import_playbook: virtualenv.yml
   when: ansible_os_family == 'RedHat'
 
 - name: get the public IP address
