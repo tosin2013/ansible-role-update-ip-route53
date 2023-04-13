@@ -1,10 +1,10 @@
 ---
-- name: update apt cache
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
   when: ansible_os_family == 'Debian'
 
-- name: install the required dependencies (Debian)
+- name: Install the required dependencies (Debian)
   ansible.builtin.apt:
     name:
     - openssl
@@ -13,7 +13,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: install the required dependencies (Red Hat) (Requires EPEL)
+- name: Install the required dependencies (Red Hat) (Requires EPEL)
   ansible.builtin.dnf:
     name:
     - openssl
@@ -21,16 +21,16 @@
     state: present
   when: ansible_os_family == 'RedHat'
 
-- name: install the required dependencies (FreeBSD)
+- name: Install the required dependencies (FreeBSD)
   community.general.pkgng:
     name:
-    - openssl
-    - "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-boto3"
-    - "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-openssl"
+      - openssl
+      - "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-boto3"
+      - "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-openssl"
     state: present
   when: ansible_os_family == 'FreeBSD'
 
-- include: virtualenv.yml
+- ansible.builtin.import_playbook: virtualenv.yml
   when: ansible_os_family == 'RedHat'
 
 - name: get the public IP address
