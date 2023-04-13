@@ -16,7 +16,7 @@
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
     # This is required for libselinux-python
-    virtualenv_site_packages: yes
+    virtualenv_site_packages: true
   with_items:
   # Update setuptools
   - name: setuptools

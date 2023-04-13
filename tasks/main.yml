@@ -1,7 +1,7 @@
 ---
 - name: update apt cache
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: ansible_os_family == 'Debian'
 
 - name: install the required dependencies (Debian)
@@ -47,6 +47,6 @@
     value: "{{ public_ip.ansible_facts.ipify_public_ip }}"
     aws_access_key: "{{ update_ip_r53_aws_access_key }}"
     aws_secret_key: "{{ update_ip_r53_aws_secret_key }}"
-    wait: "{{ item.wait | default('yes') }}"
-    overwrite: yes
+    wait: "{{ item.wait | default('true') }}"
+    overwrite: true
   with_items: "{{ update_ip_r53_records }}"
