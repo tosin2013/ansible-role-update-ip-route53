@@ -34,11 +34,11 @@
   ansible.builtin.import_playbook: virtualenv.yml
   when: ansible_os_family == 'RedHat'
 
-- name: get the public IP address
+- name: Get the public IP address
   community.general.ipify_facts:
   register: public_ip
 
-- name: update the DNS record(s)
+- name: Update the DNS record(s)
   amazon.aws.route53:
     state: present
     zone: "{{ item.zone }}"

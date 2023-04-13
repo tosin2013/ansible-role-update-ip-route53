@@ -10,7 +10,7 @@
     state: present
 
 - name: install pyOpenSSL and boto in a virtualenv
-  ansible-galaxy collection install community.general:
+  ansible.builtin.pip:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"
     version: "{{ item.version | default(omit) }}"
@@ -19,14 +19,14 @@
     virtualenv_site_packages: true
   with_items:
   # Update setuptools
-  - name: setuptools
-    state: latest
-  - name: pyOpenSSL
-  - name: boto
-  - name: enum34
-  - name: ipaddress
-  - name: cffi
+    - name: setuptools
+      state: latest
+    - name: pyOpenSSL
+    - name: boto
+    - name: enum34
+    - name: ipaddress
+    - name: cffi
 
-- name: use the created virtualenv
+- name: Use the created virtualenv
   ansible.builtin.set_fact:
     ansible_python_interpreter: "{{ update_ip_r53_virtualenv_dir }}/bin/python"
