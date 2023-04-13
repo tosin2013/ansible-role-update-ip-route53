@@ -1,11 +1,11 @@
 ---
 - name: update apt cache
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
   when: ansible_os_family == 'Debian'
 
 - name: install the required dependencies (Debian)
-  apt:
+  ansible.builtin.apt:
     name:
     - openssl
     - python-boto
@@ -14,7 +14,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: install the required dependencies (Red Hat) (Requires EPEL)
-  yum:
+  ansible.builtin.dnf:
     name:
     - openssl
     - python-pip
@@ -22,7 +22,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: install the required dependencies (FreeBSD)
-  pkgng:
+  community.general.pkgng:
     name:
     - openssl
     - "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-boto3"
@@ -34,11 +34,11 @@
   when: ansible_os_family == 'RedHat'
 
 - name: get the public IP address
-  ipify_facts:
+  community.general.ipify_facts:
   register: public_ip
 
 - name: update the DNS record(s)
-  route53:
+  amazon.aws.route53:
     state: present
     zone: "{{ item.zone }}"
     record: "{{ item.record }}"

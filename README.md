@@ -10,6 +10,8 @@ Python virtualenv instead because the packaged version of `pyOpenSSL` is not rec
 If you are not using this role on Debian/Ubuntu, CentOS/Red Hat,
 `openssl`, `boto`, and `pyOpenSSL` must be installed manually before using this role.
 
+[![ansible-lint](https://github.com/tosin2013/ansible-role-update-ip-route53/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/tosin2013/ansible-role-update-ip-route53/actions/workflows/ansible-lint.yml)
+
 ## Requirements
 
 Ansible 2.4+ is required for this role. This role also must be run by root or
