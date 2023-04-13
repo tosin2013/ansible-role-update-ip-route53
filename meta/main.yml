@@ -1,5 +1,4 @@
 galaxy_info:
-  role_name: update_ip_route53
   author: Matt Prahl
   description: updates DNS records on Amazon's Route 53 (AWS) with your public IP address
   license: MIT

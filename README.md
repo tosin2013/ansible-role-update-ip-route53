@@ -14,7 +14,7 @@ If you are not using this role on Debian/Ubuntu, CentOS/Red Hat,
 
 ## Requirements
 
-Ansible 2.4+ is required for this role. This role also must be run by root or
+Ansible 2.9+ is required for this role. This role also must be run by root or
 through sudo/become.
 
 ## Role Variables
