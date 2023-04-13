@@ -8,7 +8,6 @@ galaxy_info:
   platforms:
   - name: GenericLinux
     versions:
-      - all
       - any
   galaxy_tags:
     - public
