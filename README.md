@@ -38,8 +38,8 @@ through sudo/become.
   become: yes
 
   vars:
-  - ler53_aws_access_key: SomeAccessKey
-  - ler53_aws_secret_key: SomeSecretKey
+  - update_ip_r53_aws_access_key: SomeAccessKey
+  - update_ip_r53_aws_secret_key: SomeSecretKey
   - update_ip_r53_records:
     - zone: example.com
       record: host.example.com
