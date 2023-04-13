@@ -31,7 +31,7 @@
   when: ansible_os_family == 'FreeBSD'
 
 - name: Running VirtualEnv
-  ansible.builtin.include_task:
+  ansible.builtin.include_tasks:
     file: virtualenv.yml
   when: ansible_os_family == 'RedHat'
 
