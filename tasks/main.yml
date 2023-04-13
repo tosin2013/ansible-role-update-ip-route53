@@ -7,17 +7,17 @@
 - name: Install the required dependencies (Debian)
   ansible.builtin.apt:
     name:
-    - openssl
-    - python-boto
-    - python-openssl
+      - openssl
+      - python-boto
+      - python-openssl
     state: present
   when: ansible_os_family == 'Debian'
 
 - name: Install the required dependencies (Red Hat) (Requires EPEL)
   ansible.builtin.dnf:
     name:
-    - openssl
-    - python-pip
+      - openssl
+      - python-pip
     state: present
   when: ansible_os_family == 'RedHat'
 

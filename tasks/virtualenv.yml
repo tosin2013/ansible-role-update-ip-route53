@@ -1,6 +1,6 @@
 ---
 - name: install the virtualenv requirements
-  yum:
+  ansible.builtin.dnf:
     name:
     - python-virtualenv
     - gcc
@@ -10,7 +10,7 @@
     state: present
 
 - name: install pyOpenSSL and boto in a virtualenv
-  pip:
+  ansible-galaxy collection install community.general:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"
     version: "{{ item.version | default(omit) }}"
@@ -28,5 +28,5 @@
   - name: cffi
 
 - name: use the created virtualenv
-  set_fact:
+  ansible.builtin.set_fact:
     ansible_python_interpreter: "{{ update_ip_r53_virtualenv_dir }}/bin/python"
