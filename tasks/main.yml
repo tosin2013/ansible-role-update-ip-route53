@@ -31,7 +31,8 @@
   when: ansible_os_family == 'FreeBSD'
 
 - name: Running VirtualEnv
-  asnsible.builtin.include_tasks: virtualenv.yml
+  asnsible.builtin.include_tasks:
+    file: virtualenv.yml
   when: ansible_os_family == 'RedHat'
 
 - name: Get the public IP address
