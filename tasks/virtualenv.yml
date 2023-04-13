@@ -1,15 +1,15 @@
 ---
-- name: install the virtualenv requirements
+- name: Install the virtualenv requirements
   ansible.builtin.dnf:
     name:
-    - python-virtualenv
-    - gcc
-    - python-devel
-    - openssl-devel
-    - libffi-devel
+      - python-virtualenv
+      - gcc
+      - python-devel
+      - openssl-devel
+      - libffi-devel
     state: present
 
-- name: install pyOpenSSL and boto in a virtualenv
+- name: Install pyOpenSSL and boto in a virtualenv
   ansible.builtin.pip:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"
