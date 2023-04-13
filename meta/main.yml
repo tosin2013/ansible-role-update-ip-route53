@@ -1,4 +1,6 @@
 galaxy_info:
+  role_name: ansible_role_update_ip_route53
+  namespace: tosin2023
   author: Matt Prahl
   description: updates DNS records on Amazon's Route 53 (AWS) with your public IP address
   license: MIT
