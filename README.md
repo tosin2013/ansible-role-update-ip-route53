@@ -40,6 +40,7 @@ through sudo/become.
   vars:
   - update_ip_r53_aws_access_key: SomeAccessKey
   - update_ip_r53_aws_secret_key: SomeSecretKey
+  - use_public_ip: true
   - update_ip_r53_records:
     - zone: example.com
       record: host.example.com
@@ -47,7 +48,27 @@ through sudo/become.
       record: host2.example.com
 
   roles:
-  - mprahl.update-ip-route53
+  - ansible_role_update_ip_route53
+```
+
+```yaml
+- name: Update host.example.com and host2.example.com
+  hosts: host
+  become: yes
+
+  vars:
+  - update_ip_r53_aws_access_key: SomeAccessKey
+  - update_ip_r53_aws_secret_key: SomeSecretKey
+  - use_public_ip: false
+  - private_ip: "192.168.1.10"
+  - update_ip_r53_records:
+    - zone: example.com
+      record: host.example.com
+    - zone: example.com
+      record: host2.example.com
+
+  roles:
+  - ansible_role_update_ip_route53
 ```
 
 ## License

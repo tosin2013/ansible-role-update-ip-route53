@@ -38,6 +38,7 @@
 - name: Get the public IP address
   community.general.ipify_facts:
   register: public_ip
+  when: use_public_ip |bool
 
 - name: Update the DNS record(s)
   amazon.aws.route53:
@@ -52,3 +53,19 @@
     wait: "{{ item.wait | default('true') }}"
     overwrite: true
   with_items: "{{ update_ip_r53_records }}"
+  when: use_public_ip | bool
+
+- name: Update the DNS record(s)
+  amazon.aws.route53:
+    state: present
+    zone: "{{ item.zone }}"
+    record: "{{ item.record }}"
+    type: "{{ item.type | default('A') }}"
+    ttl: "{{ item.ttl | default(omit) }}"
+    value: "{{ private_ip }}"
+    aws_access_key: "{{ update_ip_r53_aws_access_key }}"
+    aws_secret_key: "{{ update_ip_r53_aws_secret_key }}"
+    wait: "{{ item.wait | default('true') }}"
+    overwrite: true
+  with_items: "{{ update_ip_r53_records }}"
+  when: use_public_ip | not bool

@@ -1,1 +1,3 @@
 update_ip_r53_virtualenv_dir: /tmp/update_ip_route53
+use_public_ip: true
+private_ip: "192.168.1.10"
