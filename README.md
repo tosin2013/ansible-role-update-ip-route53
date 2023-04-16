@@ -32,6 +32,7 @@ through sudo/become.
 
 ## Example Playbook
 
+**When using public IP address**
 ```yaml
 - name: Update host.example.com and host2.example.com
   hosts: host
@@ -51,6 +52,7 @@ through sudo/become.
   - ansible_role_update_ip_route53
 ```
 
+**When using private ip address**
 ```yaml
 - name: Update host.example.com and host2.example.com
   hosts: host
