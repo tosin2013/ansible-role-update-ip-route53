@@ -53,7 +53,7 @@
     wait: "{{ item.wait | default('true') }}"
     overwrite: true
   with_items: "{{ update_ip_r53_records }}"
-  when: use_public_ip | bool
+  when: not use_public_ip | bool
 
 - name: Update the DNS record(s)
   amazon.aws.route53:
@@ -68,4 +68,4 @@
     wait: "{{ item.wait | default('true') }}"
     overwrite: true
   with_items: "{{ update_ip_r53_records }}"
-  when: not use_public_ip | bool
+  when:  use_public_ip | bool
