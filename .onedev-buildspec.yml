@@ -1,0 +1,87 @@
+version: 30
+jobs:
+- name: Update DNS Entry -  Private IP address
+  jobExecutor: default-executor
+  steps:
+  - !CommandStep
+    name: Download ansible-role-update-ip-route53
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: "cat >/tmp/requirements.yml<<EOF\n---\ncollections:\n  -  amazon.aws\nroles: \n  - name: @param:ROLE_NAME@\n    src: @param:GIT_REPO@\n    version: master\nEOF\nansible-galaxy install -r /tmp/requirements.yml\n"
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: Run Playbook
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands: |
+        cat >/tmp/playbook.yml<<EOF
+        - name: Update @param:DNS_RECORD@
+          hosts: localhost
+          connection: local
+          become: yes
+
+          vars:
+          - update_ip_r53_aws_access_key: @param:AWS_ACCESS_KEY@
+          - update_ip_r53_aws_secret_key: @param:AWS_ACCESS_KEY@
+          - use_public_ip: false
+          - private_ip: "@param:IP_ADDRESS@"
+          - update_ip_r53_records:
+            - zone: @param:ZONE_NAME@
+              record: @param:DNS_RECORD@
+
+          roles:
+          - ansible_role_update_ip_route53
+        EOF
+
+        ansible-playbook  /tmp/playbook.yml @param:VERBOSE_LEVEL@ || exit $?
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  paramSpecs:
+  - !TextParam
+    name: GIT_REPO
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: https://github.com/tosin2013/ansible-role-update-ip-route53.git
+  - !TextParam
+    name: ROLE_NAME
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: ansible_role_update_ip_route53
+  - !TextParam
+    name: ZONE_NAME
+    description: 'Zone Name  Eample: example.com'
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: example.com
+  - !TextParam
+    name: DNS_RECORD
+    description: 'DNS Record Example: host.example.com'
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: host.example.com
+  - !TextParam
+    name: IP_ADDRESS
+    description: Route53 IP Address
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: 192.168.10.100
+  - !SecretParam
+    name: AWS_ACCESS_KEY
+  - !SecretParam
+    name: AWS_SECRET_KEY
+  - !TextParam
+    name: VERBOSE_LEVEL
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: -v
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
