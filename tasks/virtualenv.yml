@@ -2,7 +2,7 @@
 - name: Install the virtualenv requirements
   ansible.builtin.dnf:
     name:
-      - python-virtualenv
+      #- python-virtualenv
       - gcc
       - python-devel
       - openssl-devel
