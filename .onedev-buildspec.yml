@@ -23,7 +23,7 @@ jobs:
 
           vars:
           - update_ip_r53_aws_access_key: @param:AWS_ACCESS_KEY@
-          - update_ip_r53_aws_secret_key: @param:AWS_ACCESS_KEY@
+          - update_ip_r53_aws_secret_key: @param:AWS_SECRET_KEY@
           - use_public_ip: true
           - private_ip: "@param:IP_ADDRESS@"
           - update_ip_r53_records:
