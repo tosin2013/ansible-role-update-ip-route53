@@ -3,8 +3,8 @@
   ansible.builtin.dnf:
     name:
       #- python-virtualenv
+      #- python-devel
       - gcc
-      - python3-devel
       - openssl-devel
       - libffi-devel
     state: present
