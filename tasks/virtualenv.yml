@@ -4,7 +4,7 @@
     name:
       #- python-virtualenv
       - gcc
-      - python-devel
+      - python3-devel
       - openssl-devel
       - libffi-devel
     state: present
