@@ -12,6 +12,15 @@ roles:
 EOF
 fi
 
+# Ensure required environment variables are set
+: "${AWS_ACCESS_KEY:?Environment variable AWS_ACCESS_KEY is required}"
+: "${AWS_SECRET_KEY:?Environment variable AWS_SECRET_KEY is required}"
+: "${IP_ADDRESS:?Environment variable IP_ADDRESS is required}"
+: "${ZONE_NAME:?Environment variable ZONE_NAME is required}"
+: "${GUID:?Environment variable GUID is required}"
+: "${ACTION:?Environment variable ACTION is required}"
+: "${VERBOSE_LEVEL:?Environment variable VERBOSE_LEVEL is required}"
+
 
 ansible-galaxy install -r /tmp/requirements.yml --force -vv
 pip3 install boto3 botocore
@@ -25,20 +34,20 @@ cat >/tmp/playbook.yml<<EOF
   become: yes
 
   vars:
-  - update_ip_r53_aws_access_key:  @param:AWS_ACCESS_KEY@
-  - update_ip_r53_aws_secret_key: @param:AWS_SECRET_KEY@
+  - update_ip_r53_aws_access_key:  ${AWS_ACCESS_KEY}
+  - update_ip_r53_aws_secret_key: ${AWS_SECRET_KEY}
   - use_public_ip: true
-  - private_ip: "@param:IP_ADDRESS@"
+  - private_ip: "${IP_ADDRESS}"
   - update_ip_r53_records:
-    - zone: @param:ZONE_NAME@
-      record: api.${CLUSTER_NAME}.@param:GUID@.@param:ZONE_NAME@
-    - zone: @param:ZONE_NAME@
-      record: "*.apps.${CLUSTER_NAME}.@param:GUID@.@param:ZONE_NAME@"
+    - zone: ${ZONE_NAME}
+      record: api.${CLUSTER_NAME}.${GUID}.${ZONE_NAME}
+    - zone: ${ZONE_NAME}
+      record: "*.apps.${CLUSTER_NAME}.${GUID}.${ZONE_NAME}"
   roles:
   - ansible_role_update_ip_route53
 EOF
 
-if [ "@param:ACTION@" != "delete" ]; then 
-  ansible-playbook  /tmp/playbook.yml @param:VERBOSE_LEVEL@ || exit $?
+if [ "${ACTION}" != "delete" ]; then 
+  ansible-playbook  /tmp/playbook.yml ${VERBOSE_LEVEL} || exit $?
 fi
 
