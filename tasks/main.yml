@@ -10,7 +10,7 @@
       - openssl
       - python-boto
       - python-openssl
-    state:present
+    state: present
   when: ansible_os_family == 'Debian'
 
 - name: Install the required dependencies (Red Hat) (Requires EPEL)
