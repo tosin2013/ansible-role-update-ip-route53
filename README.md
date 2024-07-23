@@ -74,6 +74,39 @@ through sudo/become.
   - ansible_role_update_ip_route53
 ```
 
+## Environment Variables
+
+To run this script, you will need to set the following environment variables in a `.env` file:
+
+- `AWS_ACCESS_KEY`: Your AWS access key.
+- `AWS_SECRET_KEY`: Your AWS secret key.
+- `IP_ADDRESS`: The IP address you want to use.
+- `ZONE_NAME`: The DNS zone name.
+- `GUID`: The GUID for your cluster.
+- `ACTION`: The action to perform (e.g., `create`, `delete`).
+- `VERBOSE_LEVEL`: The verbosity level for the Ansible playbook (e.g., `-v`, `-vv`, `-vvv`).
+
+### Example `.env` File
+
+```
+AWS_ACCESS_KEY=your_aws_access_key_here
+AWS_SECRET_KEY=your_aws_secret_key_here
+IP_ADDRESS=your_ip_address_here
+ZONE_NAME=your_zone_name_here
+GUID=your_guid_here
+ACTION=your_action_here
+VERBOSE_LEVEL=-v
+```
+
+## Running the Deployment Script
+
+1. Ensure you have the required environment variables set in your `.env` file.
+2. Run the deployment script using the following command:
+
+```bash
+source .env && ./deployment-script.sh
+```
+
 ## License
 
 MIT

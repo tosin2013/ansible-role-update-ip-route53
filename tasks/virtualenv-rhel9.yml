@@ -1,0 +1,40 @@
+---
+- name: Ensure necessary system packages are installed
+  ansible.builtin.dnf:
+    name:
+      - gcc
+      - openssl-devel
+      - libffi-devel
+      - python3-devel
+    state: present
+
+- name: Create a virtualenv
+  ansible.builtin.command:
+    cmd: python3.9 -m venv "{{ update_ip_r53_virtualenv_dir }}"
+    creates: "{{ update_ip_r53_virtualenv_dir }}/bin/activate"
+
+- name: Set the virtual environment Python interpreter
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "{{ update_ip_r53_virtualenv_dir }}/bin/python"
+
+- name: Install setuptools in the virtualenv
+  ansible.builtin.pip:
+    name: setuptools
+    state: latest
+    virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
+    virtualenv_command: "{{ update_ip_r53_virtualenv_dir }}/bin/python -m venv"
+
+- name: Install pyOpenSSL and boto in a virtualenv
+  ansible.builtin.pip:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
+    virtualenv_command: "{{ update_ip_r53_virtualenv_dir }}/bin/python -m venv"
+  loop:
+    - name: pyOpenSSL
+    - name: boto
+    - name: boto3
+    - name: enum34
+    - name: ipaddress
+    - name: cffi

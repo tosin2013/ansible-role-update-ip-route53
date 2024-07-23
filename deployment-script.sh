@@ -1,10 +1,19 @@
 #!/bin/bash 
 
+if [ ! -f .env ]; then
+  echo "Environment file not found"
+  exit 1
+else
+    source .env
+fi
+
 if [ ! -f /tmp/requirements.yml ]; then
   cat >/tmp/requirements.yml<<EOF
 ---
 collections:
--  amazon.aws
+- amazon.aws
+- community.general
+- ansible.posix
 roles: 
 - name: ansible_role_update_ip_route53
     src: https://github.com/tosin2013/ansible-role-update-ip-route53.git
