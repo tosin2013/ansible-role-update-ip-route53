@@ -20,7 +20,7 @@
 - name: Install setuptools in the virtualenv
   ansible.builtin.pip:
     name: setuptools
-    state: latest
+    state: present
     virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
     virtualenv_command: "{{ update_ip_r53_virtualenv_dir }}/bin/python -m venv"
 

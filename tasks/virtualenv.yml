@@ -2,15 +2,15 @@
 - name: Install setuptools in the virtualenv
   ansible.builtin.pip:
     name: setuptools
-    state: latest
+    state: present
     virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
     virtualenv_site_packages: true
 
 - name: Install the virtualenv requirements
   ansible.builtin.dnf:
     name:
-      #- python-virtualenv
-      #- python-devel
+      # - python-virtualenv
+      # - python-devel
       - gcc
       - openssl-devel
       - libffi-devel
