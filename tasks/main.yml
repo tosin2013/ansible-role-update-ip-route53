@@ -73,4 +73,4 @@
     wait: "{{ item.wait | default('true') }}"
     overwrite: true
   with_items: "{{ update_ip_r53_records }}"
-  when:  use_public_ip | bool
+  when: use_public_ip | bool
