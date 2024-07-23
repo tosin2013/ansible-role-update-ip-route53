@@ -1,4 +1,11 @@
 ---
+- name: Install setuptools in the virtualenv
+  ansible.builtin.pip:
+    name: setuptools
+    state: latest
+    virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
+    virtualenv_site_packages: true
+
 - name: Install the virtualenv requirements
   ansible.builtin.dnf:
     name:
@@ -15,12 +22,8 @@
     state: "{{ item.state | default(omit) }}"
     version: "{{ item.version | default(omit) }}"
     virtualenv: "{{ update_ip_r53_virtualenv_dir }}"
-    # This is required for libselinux-python
     virtualenv_site_packages: true
   with_items:
-  # Update setuptools
-    - name: setuptools
-      state: latest
     - name: pyOpenSSL
     - name: boto
     - name: enum34
