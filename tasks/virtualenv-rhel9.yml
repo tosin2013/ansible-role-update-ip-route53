@@ -3,7 +3,6 @@
   ansible.builtin.dnf:
     name:
       - gcc
-      - openssl-devel
       - libffi-devel
       - python3-devel
     state: present
